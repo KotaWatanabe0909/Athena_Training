@@ -1,0 +1,9 @@
+# ステージ分けをせず、ビルド環境でそのまま実行する「重い」例
+FROM golang:1.22
+
+WORKDIR /app
+COPY . .
+RUN go build -o hello-go main.go
+
+# Goコンパイラが入ったままの状態で実行
+CMD ["./hello-go"]

@@ -1,0 +1,11 @@
+# ステージ1: ビルド（ここでGoのフル機能イメージを拝借する）
+FROM golang:1.22 AS builder
+WORKDIR /app
+COPY . .
+RUN go build -o hello-go main.go
+
+# ステージ2: 実行（Goが入っていない超軽量なOSに、完成品だけ移す）
+FROM alpine:latest
+WORKDIR /root/
+COPY --from=builder /app/hello-go .
+CMD ["./hello-go"]
