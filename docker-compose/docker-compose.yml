@@ -1,0 +1,33 @@
+services:
+  # Webサーバーの設定
+  web:
+    build: ./app
+    ports:
+      - "8000:8000"
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=pass
+      - POSTGRES_DB=mydb
+    depends_on:
+      - db
+    networks:
+      - app-network
+
+  # データベースの設定
+  db:
+    image: postgres:15
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=pass
+      - POSTGRES_DB=mydb
+    volumes:
+      - db-data:/var/lib/postgresql/data  # データの永続化
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  db-data:
